@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FocusTube - Distraction-Free Video Watching</title>
-    <link rel="icon" type="image/png" href="FocusTube.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -317,6 +316,33 @@
 
         .theme-dot[data-theme="midnight"] {
             background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        }
+
+        .dark-mode-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--primary-300);
+            background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark .dark-mode-toggle {
+            background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+            border-color: var(--primary-500);
         }
 
         #startScreen {
@@ -816,6 +842,7 @@
                 <button class="theme-dot" data-theme="mint" onclick="switchTheme('mint')" title="Mint Fresh"></button>
                 <button class="theme-dot" data-theme="sunset" onclick="switchTheme('sunset')" title="Sunset Glow"></button>
                 <button class="theme-dot" data-theme="midnight" onclick="switchTheme('midnight')" title="Midnight Mode"></button>
+                <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode" id="darkModeToggle">🌙</button>
             </div>
         </header>
 
@@ -907,6 +934,32 @@
             // This will be called when YouTube API is ready
         }
 
+        // Dark Mode Toggle
+        let manualDarkMode = false; // Track if user manually toggled dark mode
+
+        function toggleDarkMode() {
+            manualDarkMode = true; // User is manually controlling dark mode now
+            const isDark = document.body.classList.toggle('dark');
+            const toggleBtn = document.getElementById('darkModeToggle');
+
+            // Switch emoji based on mode
+            toggleBtn.textContent = isDark ? '☀️' : '🌙';
+        }
+
+        // Initialize dark mode based on system preference (only if user hasn't manually toggled)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark');
+            document.getElementById('darkModeToggle').textContent = '☀️';
+        }
+
+        // Listen for system dark mode changes (only if user hasn't manually toggled)
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!manualDarkMode) {
+                document.body.classList.toggle('dark', event.matches);
+                document.getElementById('darkModeToggle').textContent = event.matches ? '☀️' : '🌙';
+            }
+        });
+
         // Theme Management
         function switchTheme(themeName) {
             // Remove active class from all theme dots
@@ -924,13 +977,6 @@
                 document.documentElement.setAttribute('data-theme', themeName);
             }
         }
-
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            document.body.classList.toggle('dark', event.matches);
-        });
 
         let currentSession = {
             videoUrl: '',
