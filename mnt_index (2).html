@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusTube - Distraction-Free Video Watching</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Default Theme: Rose Blush */
+            --primary-50: #fff1f2;
+            --primary-100: #ffe4e6;
+            --primary-200: #fecdd3;
+            --primary-300: #fda4af;
+            --primary-400: #fb7185;
+            --primary-500: #f43f5e;
+            --primary-600: #e11d48;
+            --primary-700: #be123c;
+            --primary-800: #9f1239;
+            --secondary-50: #fdf2f8;
+            --secondary-100: #fce7f3;
+            --secondary-400: #f472b6;
+            --secondary-500: #ec4899;
+            --secondary-600: #db2777;
+            --accent-400: #e879f9;
+            --accent-500: #d946ef;
+
+            --bg-gradient-start: #fff1f2;
+            --bg-gradient-mid: #fff1f2;
+            --bg-gradient-end: #fef3f8;
+            --bg-gradient-dark-start: #1a0a0f;
+            --bg-gradient-dark-mid: #2d0a1f;
+            --bg-gradient-dark-end: #1f0a15;
+        }
+
+        /* Ocean Breeze Theme */
+        [data-theme="ocean"] {
+            --primary-50: #f0f9ff;
+            --primary-100: #e0f2fe;
+            --primary-200: #bae6fd;
+            --primary-300: #7dd3fc;
+            --primary-400: #38bdf8;
+            --primary-500: #0ea5e9;
+            --primary-600: #0284c7;
+            --primary-700: #0369a1;
+            --primary-800: #075985;
+            --secondary-50: #ecfeff;
+            --secondary-100: #cffafe;
+            --secondary-400: #22d3ee;
+            --secondary-500: #06b6d4;
+            --secondary-600: #0891b2;
+            --accent-400: #34d399;
+            --accent-500: #10b981;
+
+            --bg-gradient-start: #f0f9ff;
+            --bg-gradient-mid: #e0f2fe;
+            --bg-gradient-end: #f0fdfa;
+            --bg-gradient-dark-start: #0a1628;
+            --bg-gradient-dark-mid: #0f2744;
+            --bg-gradient-dark-end: #082f49;
+        }
+
+        /* Lavender Dream Theme */
+        [data-theme="lavender"] {
+            --primary-50: #faf5ff;
+            --primary-100: #f3e8ff;
+            --primary-200: #e9d5ff;
+            --primary-300: #d8b4fe;
+            --primary-400: #c084fc;
+            --primary-500: #a855f7;
+            --primary-600: #9333ea;
+            --primary-700: #7e22ce;
+            --primary-800: #6b21a8;
+            --secondary-50: #fdf4ff;
+            --secondary-100: #fae8ff;
+            --secondary-400: #e879f9;
+            --secondary-500: #d946ef;
+            --secondary-600: #c026d3;
+            --accent-400: #f0abfc;
+            --accent-500: #e879f9;
+
+            --bg-gradient-start: #faf5ff;
+            --bg-gradient-mid: #f3e8ff;
+            --bg-gradient-end: #fdf4ff;
+            --bg-gradient-dark-start: #1e1b4b;
+            --bg-gradient-dark-mid: #312e81;
+            --bg-gradient-dark-end: #4c1d95;
+        }
+
+        /* Mint Fresh Theme */
+        [data-theme="mint"] {
+            --primary-50: #f0fdf4;
+            --primary-100: #dcfce7;
+            --primary-200: #bbf7d0;
+            --primary-300: #86efac;
+            --primary-400: #4ade80;
+            --primary-500: #22c55e;
+            --primary-600: #16a34a;
+            --primary-700: #15803d;
+            --primary-800: #166534;
+            --secondary-50: #ecfdf5;
+            --secondary-100: #d1fae5;
+            --secondary-400: #34d399;
+            --secondary-500: #10b981;
+            --secondary-600: #059669;
+            --accent-400: #5eead4;
+            --accent-500: #2dd4bf;
+
+            --bg-gradient-start: #f0fdf4;
+            --bg-gradient-mid: #ecfdf5;
+            --bg-gradient-end: #f0fdfa;
+            --bg-gradient-dark-start: #022c22;
+            --bg-gradient-dark-mid: #064e3b;
+            --bg-gradient-dark-end: #065f46;
+        }
+
+        /* Sunset Glow Theme */
+        [data-theme="sunset"] {
+            --primary-50: #fff7ed;
+            --primary-100: #ffedd5;
+            --primary-200: #fed7aa;
+            --primary-300: #fdba74;
+            --primary-400: #fb923c;
+            --primary-500: #f97316;
+            --primary-600: #ea580c;
+            --primary-700: #c2410c;
+            --primary-800: #9a3412;
+            --secondary-50: #fef2f2;
+            --secondary-100: #fee2e2;
+            --secondary-400: #f87171;
+            --secondary-500: #ef4444;
+            --secondary-600: #dc2626;
+            --accent-400: #fbbf24;
+            --accent-500: #f59e0b;
+
+            --bg-gradient-start: #fff7ed;
+            --bg-gradient-mid: #ffedd5;
+            --bg-gradient-end: #fef2f2;
+            --bg-gradient-dark-start: #431407;
+            --bg-gradient-dark-mid: #7c2d12;
+            --bg-gradient-dark-end: #991b1b;
+        }
+
+        /* Midnight Mode Theme */
+        [data-theme="midnight"] {
+            --primary-50: #f8fafc;
+            --primary-100: #f1f5f9;
+            --primary-200: #e2e8f0;
+            --primary-300: #cbd5e1;
+            --primary-400: #94a3b8;
+            --primary-500: #64748b;
+            --primary-600: #475569;
+            --primary-700: #334155;
+            --primary-800: #1e293b;
+            --secondary-50: #f8fafc;
+            --secondary-100: #f1f5f9;
+            --secondary-400: #94a3b8;
+            --secondary-500: #64748b;
+            --secondary-600: #475569;
+            --accent-400: #818cf8;
+            --accent-500: #6366f1;
+
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-mid: #1e293b;
+            --bg-gradient-end: #0f172a;
+            --bg-gradient-dark-start: #020617;
+            --bg-gradient-dark-mid: #0f172a;
+            --bg-gradient-dark-end: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(160deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--primary-800);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: linear-gradient(160deg, var(--bg-gradient-dark-start) 0%, var(--bg-gradient-dark-mid) 50%, var(--bg-gradient-dark-end) 100%);
+            color: var(--primary-100);
+        }
+
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 50%, var(--accent-500) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.03em;
+        }
+
+        [data-theme="midnight"] h1 {
+            background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 50%, var(--accent-400) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: var(--primary-600);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        body.dark .tagline {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="midnight"] .tagline {
+            color: var(--primary-200);
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body.dark .theme-switcher {
+            background: rgba(20, 10, 15, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-switcher-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--primary-700);
+            opacity: 0.7;
+        }
+
+        body.dark .theme-switcher-label {
+            color: var(--primary-200);
+        }
+
+        .theme-dot {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            min-height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-dot.active {
+            border-color: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: scale(1.1);
+        }
+
+        .theme-dot[data-theme="rose"] {
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+        }
+
+        .theme-dot[data-theme="ocean"] {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+        }
+
+        .theme-dot[data-theme="lavender"] {
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+        }
+
+        .theme-dot[data-theme="mint"] {
+            background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+        }
+
+        .theme-dot[data-theme="sunset"] {
+            background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+        }
+
+        .theme-dot[data-theme="midnight"] {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        }
+
+        #startScreen {
+            max-width: 600px;
+            margin: 3rem auto;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--primary-200);
+        }
+
+        body.dark .card {
+            background: rgba(20, 10, 15, 0.7);
+            border: 1px solid var(--primary-600);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--primary-700);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        body.dark label {
+            color: var(--primary-200);
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            font-size: 16px;
+            border: 2px solid var(--primary-200);
+            border-radius: 14px;
+            font-family: 'Manrope', sans-serif;
+            background: white;
+            color: var(--primary-800);
+            transition: all 0.25s ease;
+        }
+
+        body.dark input[type="text"],
+        body.dark textarea {
+            background: rgba(20, 10, 15, 0.5);
+            border-color: var(--primary-700);
+            color: var(--primary-100);
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 4px var(--primary-100);
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: var(--primary-500);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        body.dark .hint {
+            color: var(--primary-400);
+        }
+
+        .supported-platforms {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .platform-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            background: var(--primary-100);
+            color: var(--primary-600);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        body.dark .platform-badge {
+            background: var(--primary-800);
+            color: var(--primary-300);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, var(--secondary-500) 0%, var(--accent-500) 100%);
+        }
+
+        .actions button.secondary {
+            margin-top: 0;
+        }
+
+        #videoView {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #videoView.active {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            #videoView.active {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .video-section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--primary-200);
+        }
+
+        body.dark .video-section {
+            background: rgba(20, 10, 15, 0.6);
+            border: 1px solid var(--primary-600);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-800);
+            margin-bottom: 1rem;
+        }
+
+        body.dark .video-title {
+            color: var(--primary-100);
+        }
+
+        .video-url {
+            font-size: 0.75rem;
+            color: var(--primary-500);
+            font-family: monospace;
+            word-break: break-all;
+            background: var(--primary-50);
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        body.dark .video-url {
+            color: var(--primary-400);
+            background: var(--primary-800);
+        }
+
+        .notes-section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--primary-200);
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark .notes-section {
+            background: rgba(20, 10, 15, 0.6);
+            border: 1px solid var(--primary-600);
+        }
+
+        .notes-header {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notes-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-800);
+        }
+
+        body.dark .notes-header h2 {
+            color: var(--primary-100);
+        }
+
+        .timestamp-btn {
+            padding: 0.35rem 0.6rem;
+            font-size: 0.7rem;
+            background: linear-gradient(135deg, var(--secondary-400) 0%, var(--accent-400) 100%);
+            border-radius: 6px;
+            height: auto;
+            min-width: auto;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .timestamp-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .timestamp-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, var(--primary-300) 0%, var(--primary-400) 100%);
+        }
+
+        .timestamp-btn:disabled:hover {
+            transform: none;
+        }
+
+        .timestamp-link {
+            color: var(--primary-600);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .timestamp-link:hover {
+            color: var(--primary-700);
+        }
+
+        body.dark .timestamp-link {
+            color: var(--primary-400);
+        }
+
+        body.dark .timestamp-link:hover {
+            color: var(--primary-300);
+        }
+
+        .new-video-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--rose-600);
+            border: 1px solid var(--rose-300);
+            border-radius: 8px;
+            height: auto;
+            min-width: auto;
+            margin-top: 0.75rem;
+            box-shadow: none;
+            text-transform: none;
+            letter-spacing: 0.02em;
+        }
+
+        body.dark .new-video-btn {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--rose-300);
+            border-color: var(--rose-700);
+        }
+
+        .new-video-btn:hover {
+            background: rgba(244, 63, 94, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+        }
+
+        body.dark .new-video-btn:hover {
+            background: rgba(244, 63, 94, 0.2);
+        }
+
+        #notesArea {
+            flex: 1;
+            min-height: 400px;
+            padding: 1.5rem;
+            font-size: 17px;
+            font-family: 'Literata', serif;
+            line-height: 2;
+            letter-spacing: 0.01em;
+            border: 2px solid var(--rose-200);
+            border-radius: 12px;
+            background: linear-gradient(to bottom, #ffffff 0%, #fffbfc 100%);
+            color: var(--rose-900);
+            resize: vertical;
+            transition: all 0.25s ease;
+            font-weight: 400;
+        }
+
+        body.dark #notesArea {
+            background: linear-gradient(to bottom, rgba(20, 10, 15, 0.5) 0%, rgba(25, 12, 18, 0.5) 100%);
+            border-color: var(--rose-800);
+            color: var(--rose-100);
+        }
+
+        #notesArea::placeholder {
+            color: var(--rose-400);
+            font-style: italic;
+            opacity: 0.6;
+        }
+
+        body.dark #notesArea::placeholder {
+            color: var(--rose-500);
+        }
+
+        #notesArea:focus {
+            outline: none;
+            border-color: var(--rose-500);
+            box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .actions button {
+            width: 100%;
+            height: 48px;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.3s ease;
+        }
+
+        body.dark .modal-content {
+            background: #1a0a0f;
+            border: 1px solid var(--rose-800);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 1rem;
+            color: var(--rose-800);
+            font-size: 1.5rem;
+        }
+
+        body.dark .modal-content h2 {
+            color: var(--rose-100);
+        }
+
+        .modal-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--rose-700);
+        }
+
+        body.dark .modal-content p {
+            color: var(--rose-200);
+        }
+
+        .code-box {
+            background: var(--rose-50);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--rose-200);
+            margin-bottom: 1rem;
+        }
+
+        body.dark .code-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--rose-800);
+            color: var(--rose-200);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .modal-actions button {
+            width: auto;
+            flex: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card, .video-section, .notes-section {
+                padding: 1.5rem;
+            }
+
+            #notesArea {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FocusTube</h1>
+            <p class="tagline">Watch videos without distractions</p>
+            <div class="theme-switcher">
+                <span class="theme-switcher-label">Theme</span>
+                <button class="theme-dot active" data-theme="rose" onclick="switchTheme('rose')" title="Rose Blush"></button>
+                <button class="theme-dot" data-theme="ocean" onclick="switchTheme('ocean')" title="Ocean Breeze"></button>
+                <button class="theme-dot" data-theme="lavender" onclick="switchTheme('lavender')" title="Lavender Dream"></button>
+                <button class="theme-dot" data-theme="mint" onclick="switchTheme('mint')" title="Mint Fresh"></button>
+                <button class="theme-dot" data-theme="sunset" onclick="switchTheme('sunset')" title="Sunset Glow"></button>
+                <button class="theme-dot" data-theme="midnight" onclick="switchTheme('midnight')" title="Midnight Mode"></button>
+            </div>
+        </header>
+
+        <div id="startScreen">
+            <div class="card">
+                <div class="input-group">
+                    <label>Import Code (Optional)</label>
+                    <input type="text" id="importCode" placeholder="Paste your save code here">
+                    <p class="hint">Restore a previous session</p>
+                </div>
+
+                <div class="input-group">
+                    <label>Video URL</label>
+                    <input type="text" id="videoUrl" placeholder="https://youtube.com/watch?v=..." required>
+                    <p class="hint">Supports multiple platforms:</p>
+                    <div class="supported-platforms">
+                        <span class="platform-badge">YouTube</span>
+                        <span class="platform-badge">Facebook</span>
+                        <span class="platform-badge">Instagram</span>
+                        <span class="platform-badge">TikTok</span>
+                        <span class="platform-badge">Vimeo</span>
+                        <span class="platform-badge">Twitch</span>
+                        <span class="platform-badge" style="opacity: 0.7;">& more</span>
+                    </div>
+                </div>
+
+                <button onclick="loadVideo()">Start Watching</button>
+            </div>
+        </div>
+
+        <div id="videoView">
+            <div class="video-section">
+                <div class="video-container">
+                    <iframe
+                        id="videoPlayer"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    ></iframe>
+                </div>
+                <div class="video-title" id="videoTitle">Your Video</div>
+                <div class="video-url" id="videoUrlDisplay"></div>
+                <button class="new-video-btn" onclick="newVideo()">🔄 Load New Video</button>
+            </div>
+
+            <div class="notes-section">
+                <div class="notes-header">
+                    <h2>📝 Your Notes</h2>
+                    <button class="timestamp-btn" onclick="insertTimestamp()">⏰ Timestamp</button>
+                </div>
+                <textarea id="notesArea" placeholder="Type your notes here while watching..."></textarea>
+                <div class="actions">
+                    <button onclick="shareVideo()">🔗 Share</button>
+                    <button class="secondary" onclick="saveSession()">💾 Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <h2>💾 Save Your Session</h2>
+            <p>Copy this code to restore your video and notes later!</p>
+            <div class="code-box" id="saveCodeBox"></div>
+            <div class="modal-actions">
+                <button onclick="copyCode()">📋 Copy Code</button>
+                <button class="secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <h2>🔗 Share This Video</h2>
+            <p>Share this link with anyone! They can watch the same video with your notes and timestamp.</p>
+            <div class="code-box" id="shareUrlBox"></div>
+            <div class="modal-actions">
+                <button onclick="copyShareUrl()">📋 Copy Link</button>
+                <button class="secondary" onclick="closeShareModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // YouTube Player Variable
+        let youtubePlayer = null;
+
+        // YouTube IFrame API callback
+        function onYouTubeIframeAPIReady() {
+            // This will be called when YouTube API is ready
+        }
+
+        // Theme Management
+        function switchTheme(themeName) {
+            // Remove active class from all theme dots
+            document.querySelectorAll('.theme-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+
+            // Add active class to selected theme
+            document.querySelector(`.theme-dot[data-theme="${themeName}"]`).classList.add('active');
+
+            // Apply theme to document
+            if (themeName === 'rose') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', themeName);
+            }
+        }
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            document.body.classList.toggle('dark', event.matches);
+        });
+
+        let currentSession = {
+            videoUrl: '',
+            embedUrl: '',
+            videoId: '',
+            platform: '',
+            notes: ''
+        };
+
+        function detectVideoPlatform(url) {
+            // YouTube
+            const youtubePatterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\?\/\s]{11})/,
+                /youtube\.com\/embed\/([^&\?\/\s]{11})/,
+                /youtube\.com\/v\/([^&\?\/\s]{11})/
+            ];
+
+            for (let pattern of youtubePatterns) {
+                const match = url.match(pattern);
+                if (match) {
+                    const videoId = match[1];
+                    return {
+                        platform: 'YouTube',
+                        videoId: videoId,
+                        embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=1&modestbranding=1&rel=0&fs=1&controls=1`
+                    };
+                }
+            }
+
+            // Vimeo
+            const vimeoMatch = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+            if (vimeoMatch) {
+                const videoId = vimeoMatch[1];
+                return {
+                    platform: 'Vimeo',
+                    videoId: videoId,
+                    embedUrl: `https://player.vimeo.com/video/${videoId}`
+                };
+            }
+
+            // Facebook
+            if (url.includes('facebook.com') || url.includes('fb.watch') || url.includes('fb.com')) {
+                const encodedUrl = encodeURIComponent(url);
+                return {
+                    platform: 'Facebook',
+                    videoId: 'video',
+                    embedUrl: `https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=734`
+                };
+            }
+
+            // Instagram
+            const instagramMatch = url.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
+            if (instagramMatch) {
+                const videoId = instagramMatch[1];
+                return {
+                    platform: 'Instagram',
+                    videoId: videoId,
+                    embedUrl: `https://www.instagram.com/p/${videoId}/embed`
+                };
+            }
+
+            // TikTok
+            const tiktokMatch = url.match(/tiktok\.com\/.*?\/video\/(\d+)/);
+            if (tiktokMatch) {
+                const videoId = tiktokMatch[1];
+                return {
+                    platform: 'TikTok',
+                    videoId: videoId,
+                    embedUrl: `https://www.tiktok.com/embed/v2/${videoId}`
+                };
+            }
+
+            // Dailymotion
+            const dailymotionMatch = url.match(/dailymotion\.com\/video\/([^_\?]+)/);
+            if (dailymotionMatch) {
+                const videoId = dailymotionMatch[1];
+                return {
+                    platform: 'Dailymotion',
+                    videoId: videoId,
+                    embedUrl: `https://www.dailymotion.com/embed/video/${videoId}`
+                };
+            }
+
+            // Twitch
+            const twitchMatch = url.match(/twitch\.tv\/videos\/(\d+)/);
+            if (twitchMatch) {
+                const videoId = twitchMatch[1];
+                return {
+                    platform: 'Twitch',
+                    videoId: videoId,
+                    embedUrl: `https://player.twitch.tv/?video=${videoId}&parent=${window.location.hostname}`
+                };
+            }
+
+            // Streamable
+            const streamableMatch = url.match(/streamable\.com\/([a-z0-9]+)/i);
+            if (streamableMatch) {
+                const videoId = streamableMatch[1];
+                return {
+                    platform: 'Streamable',
+                    videoId: videoId,
+                    embedUrl: `https://streamable.com/e/${videoId}`
+                };
+            }
+
+            // Wistia
+            const wistiaMatch = url.match(/wistia\.com\/medias\/([a-z0-9]+)/i);
+            if (wistiaMatch) {
+                const videoId = wistiaMatch[1];
+                return {
+                    platform: 'Wistia',
+                    videoId: videoId,
+                    embedUrl: `https://fast.wistia.net/embed/iframe/${videoId}`
+                };
+            }
+
+            // Vidyard
+            const vidyardMatch = url.match(/vidyard\.com\/watch\/([a-zA-Z0-9]+)/);
+            if (vidyardMatch) {
+                const videoId = vidyardMatch[1];
+                return {
+                    platform: 'Vidyard',
+                    videoId: videoId,
+                    embedUrl: `https://play.vidyard.com/${videoId}`
+                };
+            }
+
+            // Rumble
+            const rumbleMatch = url.match(/rumble\.com\/([a-z0-9-]+)/i);
+            if (rumbleMatch) {
+                const videoId = rumbleMatch[1];
+                return {
+                    platform: 'Rumble',
+                    videoId: videoId,
+                    embedUrl: `https://rumble.com/embed/${videoId}/`
+                };
+            }
+
+            return null;
+        }
+
+        // Check for URL parameters on page load
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoParam = urlParams.get('v') || urlParams.get('video');
+            const timeParam = urlParams.get('t') || urlParams.get('time');
+            const notesParam = urlParams.get('notes');
+
+            if (videoParam) {
+                const videoData = detectVideoPlatform(decodeURIComponent(videoParam));
+                if (videoData) {
+                    currentSession = {
+                        videoUrl: decodeURIComponent(videoParam),
+                        embedUrl: videoData.embedUrl,
+                        videoId: videoData.videoId,
+                        platform: videoData.platform,
+                        notes: notesParam ? decodeURIComponent(notesParam) : ''
+                    };
+
+                    // Add timestamp to embed URL if provided
+                    if (timeParam && videoData.platform === 'YouTube') {
+                        currentSession.embedUrl += `&start=${timeParam}`;
+                    }
+
+                    setupVideoPlayer(currentSession.embedUrl, currentSession.videoId, currentSession.platform, currentSession.videoUrl, currentSession.notes);
+                }
+            }
+        });
+
+        function loadVideo() {
+            const importCode = document.getElementById('importCode').value.trim();
+
+            if (importCode) {
+                try {
+                    const decoded = atob(importCode);
+                    const session = JSON.parse(decoded);
+                    currentSession = session;
+                    setupVideoPlayer(session.embedUrl, session.videoId, session.platform, session.videoUrl, session.notes);
+                    return;
+                } catch (e) {
+                    showAlert('Invalid import code. Please check and try again.');
+                    return;
+                }
+            }
+
+            const videoUrl = document.getElementById('videoUrl').value.trim();
+
+            if (!videoUrl) {
+                showAlert('Please enter a video URL!');
+                return;
+            }
+
+            const videoData = detectVideoPlatform(videoUrl);
+
+            if (!videoData) {
+                showAlert('Sorry, we couldn\'t recognize this video URL. Supported platforms: YouTube, Vimeo, Facebook, Instagram, TikTok, Dailymotion, Twitch, Streamable, Wistia, Vidyard, Rumble, and more!');
+                return;
+            }
+
+            currentSession = {
+                videoUrl: videoUrl,
+                embedUrl: videoData.embedUrl,
+                videoId: videoData.videoId,
+                platform: videoData.platform,
+                notes: ''
+            };
+
+            setupVideoPlayer(videoData.embedUrl, videoData.videoId, videoData.platform, videoUrl, '');
+        }
+
+        function formatTime(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+
+            if (hrs > 0) {
+                return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function insertTimestamp() {
+            const notesArea = document.getElementById('notesArea');
+
+            if (currentSession.platform === 'YouTube' && youtubePlayer && youtubePlayer.getCurrentTime) {
+                try {
+                    const currentTime = Math.floor(youtubePlayer.getCurrentTime());
+                    const timeString = formatTime(currentTime);
+
+                    const cursorPos = notesArea.selectionStart;
+                    const textBefore = notesArea.value.substring(0, cursorPos);
+                    const textAfter = notesArea.value.substring(cursorPos);
+
+                    notesArea.value = textBefore + `\n[${timeString}] ` + textAfter;
+                    notesArea.focus();
+                    notesArea.selectionStart = notesArea.selectionEnd = cursorPos + timeString.length + 4;
+
+                    currentSession.notes = notesArea.value;
+
+                    // Make timestamps clickable
+                    makeTimestampsClickable();
+                } catch (e) {
+                    showAlert('Could not get video time. Make sure the video is loaded!');
+                }
+            }
+        }
+
+        function makeTimestampsClickable() {
+            const notesArea = document.getElementById('notesArea');
+
+            // Add click handler to notes area
+            notesArea.addEventListener('click', function(e) {
+                if (currentSession.platform !== 'YouTube') return;
+
+                // Get clicked position
+                const clickPos = notesArea.selectionStart;
+                const text = notesArea.value;
+
+                // Find if we clicked on a timestamp [MM:SS] or [HH:MM:SS]
+                const timestampRegex = /\[(\d{1,2}:\d{2}(?::\d{2})?)\]/g;
+                let match;
+
+                while ((match = timestampRegex.exec(text)) !== null) {
+                    const start = match.index;
+                    const end = match.index + match[0].length;
+
+                    // Check if click was within this timestamp
+                    if (clickPos >= start && clickPos <= end) {
+                        jumpToTime(match[1]);
+                        break;
+                    }
+                }
+            });
+        }
+
+        function jumpToTime(timeString) {
+            if (currentSession.platform !== 'YouTube' || !youtubePlayer) return;
+
+            const parts = timeString.split(':').map(Number);
+            let seconds = 0;
+
+            if (parts.length === 3) {
+                // HH:MM:SS
+                seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+            } else if (parts.length === 2) {
+                // MM:SS
+                seconds = parts[0] * 60 + parts[1];
+            }
+
+            try {
+                youtubePlayer.seekTo(seconds, true);
+            } catch (e) {
+                showAlert('Could not jump to timestamp!');
+            }
+        }
+
+        function shareVideo() {
+            if (!currentSession.videoUrl) {
+                showAlert('No video loaded to share!');
+                return;
+            }
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const params = new URLSearchParams();
+            params.set('v', currentSession.videoUrl);
+
+            if (currentSession.notes) {
+                params.set('notes', currentSession.notes);
+            }
+
+            const shareUrl = `${baseUrl}?${params.toString()}`;
+            document.getElementById('shareUrlBox').textContent = shareUrl;
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function copyShareUrl() {
+            const url = document.getElementById('shareUrlBox').textContent;
+
+            navigator.clipboard.writeText(url).then(() => {
+                showAlert('✅ Share link copied to clipboard!');
+                closeShareModal();
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert('✅ Share link copied!');
+                    closeShareModal();
+                } catch (err) {
+                    showAlert('Please manually copy the link.');
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        function setupVideoPlayer(embedUrl, videoId, platform, originalUrl, notes) {
+            const timestampBtn = document.querySelector('.timestamp-btn');
+
+            // Clear any existing YouTube player
+            youtubePlayer = null;
+
+            if (platform === 'YouTube') {
+                // Initialize YouTube IFrame Player
+                const iframe = document.getElementById('videoPlayer');
+                iframe.src = embedUrl;
+
+                // Wait for iframe to load, then initialize player
+                setTimeout(() => {
+                    try {
+                        youtubePlayer = new YT.Player('videoPlayer', {
+                            events: {
+                                'onReady': function() {
+                                    timestampBtn.disabled = false;
+                                    timestampBtn.textContent = '⏰ Timestamp';
+                                }
+                            }
+                        });
+                    } catch (e) {
+                        // YouTube API not ready, fallback
+                        timestampBtn.disabled = false;
+                        timestampBtn.textContent = '⏰ Timestamp';
+                    }
+                }, 1000);
+            } else {
+                // Non-YouTube video
+                document.getElementById('videoPlayer').src = embedUrl;
+                timestampBtn.disabled = true;
+                timestampBtn.textContent = '⏰ Timestamp (YouTube only)';
+            }
+
+            document.getElementById('videoTitle').textContent = `${platform} Video (ID: ${videoId})`;
+            document.getElementById('videoUrlDisplay').textContent = originalUrl;
+            document.getElementById('notesArea').value = notes;
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('videoView').classList.add('active');
+
+            // Enable clickable timestamps
+            makeTimestampsClickable();
+        }
+
+        function saveSession() {
+            currentSession.notes = document.getElementById('notesArea').value;
+            const sessionJson = JSON.stringify(currentSession);
+            const saveCode = btoa(sessionJson);
+            document.getElementById('saveCodeBox').textContent = saveCode;
+            document.getElementById('saveModal').classList.add('active');
+        }
+
+        function copyCode() {
+            const code = document.getElementById('saveCodeBox').textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                showAlert('✅ Code copied to clipboard!');
+                closeModal();
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert('✅ Code copied!');
+                    closeModal();
+                } catch (err) {
+                    showAlert('Please manually copy the code.');
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('saveModal').classList.remove('active');
+        }
+
+        function confirmNewVideo() {
+            document.getElementById('videoUrl').value = '';
+            document.getElementById('importCode').value = '';
+            document.getElementById('videoView').classList.remove('active');
+            document.getElementById('startScreen').style.display = 'block';
+            currentSession = { videoUrl: '', embedUrl: '', videoId: '', platform: '', notes: '' };
+
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        function newVideo() {
+            const confirmModal = document.createElement('div');
+            confirmModal.className = 'modal active';
+            confirmModal.innerHTML = `
+                <div class="modal-content">
+                    <h2>⚠️ Start New Video?</h2>
+                    <p>Make sure to save or share your current session first! Your notes will be lost.</p>
+                    <div class="modal-actions">
+                        <button class="secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+                        <button onclick="confirmNewVideo(); this.closest('.modal').remove()">Continue</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmModal);
+        }
+
+        function showAlert(message) {
+            const alertModal = document.createElement('div');
+            alertModal.className = 'modal active';
+            alertModal.innerHTML = `
+                <div class="modal-content">
+                    <h2>Notice</h2>
+                    <p>${message}</p>
+                    <button onclick="this.closest('.modal').remove()">OK</button>
+                </div>
+            `;
+            document.body.appendChild(alertModal);
+        }
+
+        setInterval(() => {
+            const notesArea = document.getElementById('notesArea');
+            if (notesArea && document.getElementById('videoView').classList.contains('active')) {
+                currentSession.notes = notesArea.value;
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
