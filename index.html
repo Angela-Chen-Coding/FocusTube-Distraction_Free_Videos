@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FocusTube - Your Video Library</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="FocusTube.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -518,11 +518,12 @@
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(30px);
             border-radius: 16px;
-            padding: 1.25rem;
+            padding: 0;
             border: 1px solid var(--primary-200);
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
         }
 
         body.dark .video-card {
@@ -533,6 +534,18 @@
         .video-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-card-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--primary-100) 0%, var(--secondary-100) 100%);
+            display: block;
+        }
+
+        .video-card-content {
+            padding: 1.25rem;
         }
 
         .video-card-platform {
@@ -682,17 +695,19 @@
         }
 
         .folder-section-header {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-700);
-            margin: 2rem 0 1rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-500);
+            margin: 2.5rem 0 0.5rem 0;
+            padding: 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+            grid-column: 1 / -1;
         }
 
         body.dark .folder-section-header {
-            color: var(--primary-200);
+            color: var(--primary-400);
         }
 
         /* Video View Styles (similar to before) */
@@ -1298,6 +1313,19 @@
             }
         }
 
+        // ===== VIDEO THUMBNAIL GENERATION =====
+        function getVideoThumbnail(video) {
+            if (video.platform === 'YouTube') {
+                return `https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`;
+            } else if (video.platform === 'Vimeo') {
+                return `https://vumbnail.com/${video.videoId}.jpg`;
+            } else if (video.platform === 'Dailymotion') {
+                return `https://www.dailymotion.com/thumbnail/video/${video.videoId}`;
+            }
+            // Default placeholder for other platforms
+            return '';
+        }
+
         // ===== VIDEO PLATFORM DETECTION =====
         function detectVideoPlatform(url) {
             // YouTube
@@ -1555,17 +1583,22 @@
 
                 html += looseVideos.map(({ video, index }) => {
                     const preview = video.description || video.notes || 'No description yet...';
+                    const thumbnail = getVideoThumbnail(video);
+                    const thumbnailHtml = thumbnail ? `<img src="${thumbnail}" alt="${video.title || 'Video'}" class="video-card-thumbnail" onerror="this.style.display='none'">` : '';
                     return `
                         <div class="video-card" onclick="openVideo(${index})">
-                            <span class="video-card-platform">${video.platform}</span>
-                            <div class="video-card-title">${video.title || 'Untitled Video'}</div>
-                            <div class="video-card-notes-preview">${preview}</div>
-                            <div class="video-card-footer">
-                                <span>${new Date(video.dateAdded).toLocaleDateString()}</span>
-                                <div>
-                                    <button class="delete-btn" onclick="event.stopPropagation(); showMoveToFolderModal(${index})" title="Move to Folder">📁</button>
-                                    <button class="delete-btn" onclick="event.stopPropagation(); showRenameModal(${index})" title="Edit">✏️</button>
-                                    <button class="delete-btn" onclick="event.stopPropagation(); deleteVideo(${index})" title="Delete">🗑️</button>
+                            ${thumbnailHtml}
+                            <div class="video-card-content">
+                                <span class="video-card-platform">${video.platform}</span>
+                                <div class="video-card-title">${video.title || 'Untitled Video'}</div>
+                                <div class="video-card-notes-preview">${preview}</div>
+                                <div class="video-card-footer">
+                                    <span>${new Date(video.dateAdded).toLocaleDateString()}</span>
+                                    <div>
+                                        <button class="delete-btn" onclick="event.stopPropagation(); showMoveToFolderModal(${index})" title="Move to Folder">📁</button>
+                                        <button class="delete-btn" onclick="event.stopPropagation(); showRenameModal(${index})" title="Edit">✏️</button>
+                                        <button class="delete-btn" onclick="event.stopPropagation(); deleteVideo(${index})" title="Delete">🗑️</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1591,17 +1624,22 @@
             html += folder.videoIndices.map(index => {
                 const video = videoLibrary[index];
                 const preview = video.description || video.notes || 'No description yet...';
+                const thumbnail = getVideoThumbnail(video);
+                const thumbnailHtml = thumbnail ? `<img src="${thumbnail}" alt="${video.title || 'Video'}" class="video-card-thumbnail" onerror="this.style.display='none'">` : '';
                 return `
                     <div class="video-card" onclick="openVideo(${index})">
-                        <span class="video-card-platform">${video.platform}</span>
-                        <div class="video-card-title">${video.title || 'Untitled Video'}</div>
-                        <div class="video-card-notes-preview">${preview}</div>
-                        <div class="video-card-footer">
-                            <span>${new Date(video.dateAdded).toLocaleDateString()}</span>
-                            <div>
-                                <button class="delete-btn" onclick="event.stopPropagation(); removeVideoFromFolder(${folderIndex}, ${index})" title="Remove from Folder">📤</button>
-                                <button class="delete-btn" onclick="event.stopPropagation(); showRenameModal(${index})" title="Edit">✏️</button>
-                                <button class="delete-btn" onclick="event.stopPropagation(); deleteVideo(${index})" title="Delete">🗑️</button>
+                        ${thumbnailHtml}
+                        <div class="video-card-content">
+                            <span class="video-card-platform">${video.platform}</span>
+                            <div class="video-card-title">${video.title || 'Untitled Video'}</div>
+                            <div class="video-card-notes-preview">${preview}</div>
+                            <div class="video-card-footer">
+                                <span>${new Date(video.dateAdded).toLocaleDateString()}</span>
+                                <div>
+                                    <button class="delete-btn" onclick="event.stopPropagation(); removeVideoFromFolder(${folderIndex}, ${index})" title="Remove from Folder">📤</button>
+                                    <button class="delete-btn" onclick="event.stopPropagation(); showRenameModal(${index})" title="Edit">✏️</button>
+                                    <button class="delete-btn" onclick="event.stopPropagation(); deleteVideo(${index})" title="Delete">🗑️</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1891,19 +1929,23 @@
         }
 
         function backToLibrary() {
-            // Save notes if watching a library video
+            // Save notes first for both library and temp videos
+            const currentNotes = document.getElementById('notesArea').value;
+
             if (currentVideoIndex !== null) {
-                videoLibrary[currentVideoIndex].notes = document.getElementById('notesArea').value;
+                videoLibrary[currentVideoIndex].notes = currentNotes;
+            } else if (tempVideo) {
+                tempVideo.notes = currentNotes;
             }
 
-            // If watching temp video with notes, warn before discarding
-            if (currentVideoIndex === null && tempVideo && tempVideo.notes && tempVideo.notes.trim()) {
+            // If watching temp video, warn before discarding
+            if (currentVideoIndex === null && tempVideo) {
                 const confirmModal = document.createElement('div');
                 confirmModal.className = 'modal active';
                 confirmModal.innerHTML = `
                     <div class="modal-content">
                         <h2>⚠️ Discard Unsaved Video?</h2>
-                        <p>You have notes for this video but haven't saved it to your library. Your notes will be lost!</p>
+                        <p>This video hasn't been saved to your library. If you go back now, it will be lost!</p>
                         <div class="modal-actions">
                             <button class="secondary" onclick="this.closest('.modal').remove()">Cancel</button>
                             <button onclick="forceBackToLibrary(); this.closest('.modal').remove()">Discard</button>
