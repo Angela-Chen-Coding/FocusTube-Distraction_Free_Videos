@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FocusTube - Your Video Library</title>
-    <link rel="icon" type="image/png" href="FocusTube.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -2165,11 +2164,19 @@
             }
         }
 
+        let timestampListenerAdded = false;
+
         function makeTimestampsClickable() {
             const notesArea = document.getElementById('notesArea');
 
-            notesArea.addEventListener('click', function(e) {
-                if (currentVideoIndex === null || videoLibrary[currentVideoIndex].platform !== 'YouTube') return;
+            // Only add listener once to avoid duplicates
+            if (timestampListenerAdded) return;
+            timestampListenerAdded = true;
+
+            function handleTimestampClick(e) {
+                // Get current video (either from library or temp)
+                const video = currentVideoIndex !== null ? videoLibrary[currentVideoIndex] : tempVideo;
+                if (!video || video.platform !== 'YouTube') return;
 
                 const clickPos = notesArea.selectionStart;
                 const text = notesArea.value;
@@ -2182,11 +2189,16 @@
                     const end = match.index + match[0].length;
 
                     if (clickPos >= start && clickPos <= end) {
+                        e.preventDefault();
                         jumpToTime(match[1]);
                         break;
                     }
                 }
-            });
+            }
+
+            // Add both click and touchend for mobile support
+            notesArea.addEventListener('click', handleTimestampClick);
+            notesArea.addEventListener('touchend', handleTimestampClick);
         }
 
         function jumpToTime(timeString) {
