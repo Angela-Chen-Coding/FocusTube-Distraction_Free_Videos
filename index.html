@@ -1488,6 +1488,18 @@
 
         // ===== VIEW SWITCHING =====
         function showLibrary() {
+            // Pause YouTube videos
+            if (youtubePlayer && youtubePlayer.pauseVideo) {
+                try {
+                    youtubePlayer.pauseVideo();
+                } catch (e) {
+                    console.error('Error pausing video:', e);
+                }
+            }
+
+            // For non-YouTube videos, we can't pause easily, so just switch views
+            // The video will stop when user loads a new video anyway
+
             document.getElementById('startScreen').classList.remove('active');
             document.getElementById('videoView').classList.remove('active');
             document.getElementById('libraryView').classList.add('active');
