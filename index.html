@@ -1512,19 +1512,14 @@
 
             if (video.platform === 'YouTube') {
                 const iframe = document.getElementById('videoPlayer');
-                iframe.src = '';  // Clear the iframe
 
+                // Always set the embedUrl first as fallback
+                iframe.src = video.embedUrl;
+
+                // Then try to attach YouTube IFrame API for timestamps
                 setTimeout(() => {
                     try {
                         youtubePlayer = new YT.Player('videoPlayer', {
-                            videoId: video.videoId,
-                            playerVars: {
-                                'enablejsapi': 1,
-                                'modestbranding': 1,
-                                'rel': 0,
-                                'fs': 1,
-                                'controls': 1
-                            },
                             events: {
                                 'onReady': function(event) {
                                     timestampBtn.disabled = false;
@@ -1533,11 +1528,11 @@
                             }
                         });
                     } catch (e) {
-                        console.error('YouTube Player error:', e);
+                        console.error('YouTube Player API error (video still plays):', e);
                         timestampBtn.disabled = false;
                         timestampBtn.textContent = '⏰ Timestamp';
                     }
-                }, 300);
+                }, 1000);
             } else {
                 document.getElementById('videoPlayer').src = video.embedUrl;
                 timestampBtn.disabled = true;
