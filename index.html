@@ -1514,49 +1514,44 @@
             document.getElementById('notesArea').value = video.notes || '';
 
             const timestampBtn = document.querySelector('.timestamp-btn');
-            const videoContainer = document.querySelector('.video-container');
+            const iframe = document.getElementById('videoPlayer');
 
-            // Destroy old YouTube player completely
-            if (youtubePlayer && typeof youtubePlayer.destroy === 'function') {
+            // Clear old YouTube player if exists
+            if (youtubePlayer) {
                 try {
                     youtubePlayer.destroy();
                 } catch (e) {
-                    console.error('Error destroying old player:', e);
+                    console.error('Error destroying player:', e);
                 }
+                youtubePlayer = null;
             }
-            youtubePlayer = null;
 
-            // Create fresh iframe every time to avoid state issues
-            videoContainer.innerHTML = `
-                <iframe
-                    id="videoPlayer"
-                    allowfullscreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    src="${video.embedUrl}"
-                ></iframe>
-            `;
+            // Set iframe src - this makes video play
+            iframe.src = video.embedUrl;
 
             if (video.platform === 'YouTube') {
                 timestampBtn.disabled = false;
                 timestampBtn.textContent = '⏰ Timestamp';
 
-                // Initialize YouTube Player API after iframe loads
+                // Wait for iframe to load, then initialize YouTube API for timestamps
                 setTimeout(() => {
                     try {
+                        // Create new YouTube Player for timestamp functionality
                         youtubePlayer = new YT.Player('videoPlayer', {
                             events: {
                                 'onReady': function(event) {
-                                    console.log('YouTube Player API ready for library video!');
+                                    console.log('YouTube API ready - timestamps enabled!');
                                 },
                                 'onError': function(event) {
-                                    console.error('YouTube Player error:', event);
+                                    console.error('YouTube API error:', event);
                                 }
                             }
                         });
                     } catch (e) {
-                        console.error('YouTube API initialization error:', e);
+                        console.error('YouTube API init error:', e);
+                        // Timestamps will still work manually even if API fails
                     }
-                }, 2000);
+                }, 3000); // Wait 3 seconds for video to fully load
             } else {
                 timestampBtn.disabled = true;
                 timestampBtn.textContent = '⏰ Timestamp (YouTube only)';
