@@ -1514,46 +1514,43 @@
             document.getElementById('notesArea').value = video.notes || '';
 
             const timestampBtn = document.querySelector('.timestamp-btn');
-            const videoContainer = document.querySelector('.video-container');
-
-            // SOLUTION: Completely remove old iframe and create fresh one each time
-            // This prevents YouTube API conflicts between videos
-            videoContainer.innerHTML = '';
-
-            const newIframe = document.createElement('iframe');
-            newIframe.id = 'videoPlayer';
-            newIframe.setAttribute('allowfullscreen', '');
-            newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-            videoContainer.appendChild(newIframe);
+            const iframe = document.getElementById('videoPlayer');
 
             if (video.platform === 'YouTube') {
                 timestampBtn.disabled = false;
                 timestampBtn.textContent = '⏰ Timestamp';
 
-                // Now create YouTube player with fresh iframe - no conflicts!
-                setTimeout(() => {
+                // If YouTube player already exists, just change the video
+                if (youtubePlayer && youtubePlayer.loadVideoById) {
                     try {
-                        youtubePlayer = new YT.Player('videoPlayer', {
-                            videoId: video.videoId,
-                            playerVars: {
-                                'enablejsapi': 1,
-                                'modestbranding': 1,
-                                'rel': 0,
-                                'fs': 1,
-                                'controls': 1
-                            },
-                            events: {
-                                'onReady': function(event) {
-                                    console.log('✅ YouTube API ready - auto-timestamps enabled!');
-                                }
-                            }
-                        });
+                        youtubePlayer.loadVideoById(video.videoId);
+                        console.log('✅ Changed to new video using existing player');
                     } catch (e) {
-                        console.error('YouTube API error:', e);
+                        console.error('Error loading video:', e);
+                        // Fallback: set iframe src
+                        iframe.src = video.embedUrl;
                     }
-                }, 500);
+                } else {
+                    // First time: create new YouTube player
+                    iframe.src = video.embedUrl;
+
+                    setTimeout(() => {
+                        try {
+                            youtubePlayer = new YT.Player('videoPlayer', {
+                                events: {
+                                    'onReady': function(event) {
+                                        console.log('✅ YouTube Player initialized!');
+                                    }
+                                }
+                            });
+                        } catch (e) {
+                            console.error('YouTube API init error:', e);
+                        }
+                    }, 2000);
+                }
             } else {
-                newIframe.src = video.embedUrl;
+                // Non-YouTube video
+                iframe.src = video.embedUrl;
                 timestampBtn.disabled = true;
                 timestampBtn.textContent = '⏰ Timestamp (YouTube only)';
             }
