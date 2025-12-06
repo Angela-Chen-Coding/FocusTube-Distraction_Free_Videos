@@ -1516,37 +1516,38 @@
             const timestampBtn = document.querySelector('.timestamp-btn');
             const iframe = document.getElementById('videoPlayer');
 
-            // Clear old player
-            if (youtubePlayer && typeof youtubePlayer.destroy === 'function') {
-                try {
-                    youtubePlayer.destroy();
-                } catch (e) {
-                    console.error('Error destroying player:', e);
-                }
-            }
-            youtubePlayer = null;
-
-            // SIMPLE FIX: Just set the iframe src directly
+            // Set iframe src first
             iframe.src = video.embedUrl;
 
             if (video.platform === 'YouTube') {
-                timestampBtn.disabled = false;
-                timestampBtn.textContent = '⏰ Timestamp';
+                timestampBtn.disabled = true;
+                timestampBtn.textContent = '⏰ Loading...';
 
-                // Try to enable YouTube API after video loads
-                setTimeout(() => {
-                    try {
-                        youtubePlayer = new YT.Player('videoPlayer', {
-                            events: {
-                                'onReady': function(event) {
-                                    console.log('YouTube player ready');
+                // Wait for iframe to load, THEN attach YouTube API
+                iframe.onload = function() {
+                    setTimeout(() => {
+                        try {
+                            // This will use the EXISTING iframe, not replace it
+                            youtubePlayer = new YT.Player(iframe, {
+                                events: {
+                                    'onReady': function(event) {
+                                        timestampBtn.disabled = false;
+                                        timestampBtn.textContent = '⏰ Timestamp';
+                                        console.log('YouTube API ready!');
+                                    },
+                                    'onError': function(event) {
+                                        timestampBtn.disabled = false;
+                                        timestampBtn.textContent = '⏰ Timestamp';
+                                    }
                                 }
-                            }
-                        });
-                    } catch (e) {
-                        console.error('YouTube API error:', e);
-                    }
-                }, 2000);
+                            });
+                        } catch (e) {
+                            console.error('YouTube API error:', e);
+                            timestampBtn.disabled = false;
+                            timestampBtn.textContent = '⏰ Timestamp';
+                        }
+                    }, 1000);
+                };
             } else {
                 timestampBtn.disabled = true;
                 timestampBtn.textContent = '⏰ Timestamp (YouTube only)';
@@ -2261,7 +2262,7 @@
         }
 
         function jumpToTime(timeString) {
-            if (!youtubePlayer) return;
+            if (!youtubePlayer || !youtubePlayer.seekTo) return;
 
             const parts = timeString.split(':').map(Number);
             let seconds = 0;
@@ -2275,7 +2276,7 @@
             try {
                 youtubePlayer.seekTo(seconds, true);
             } catch (e) {
-                showAlert('Could not jump to timestamp!');
+                console.error('Could not jump to timestamp:', e);
             }
         }
 
