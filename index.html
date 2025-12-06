@@ -1501,6 +1501,13 @@
             const timestampBtn = document.querySelector('.timestamp-btn');
 
             // Clear any existing YouTube player
+            if (youtubePlayer && typeof youtubePlayer.destroy === 'function') {
+                try {
+                    youtubePlayer.destroy();
+                } catch (e) {
+                    console.error('Error destroying player:', e);
+                }
+            }
             youtubePlayer = null;
 
             if (video.platform === 'YouTube') {
@@ -2174,14 +2181,15 @@
             }
         }
 
-        let timestampListenerAdded = false;
-
         function makeTimestampsClickable() {
             const notesArea = document.getElementById('notesArea');
+            if (!notesArea) return;
 
-            // Only add listener once to avoid duplicates
-            if (timestampListenerAdded) return;
-            timestampListenerAdded = true;
+            // Remove old listeners first (if they exist)
+            if (notesArea._handleTimestampClick) {
+                notesArea.removeEventListener('click', notesArea._handleTimestampClick);
+                notesArea.removeEventListener('touchend', notesArea._handleTimestampClick);
+            }
 
             function handleTimestampClick(e) {
                 // Get current video (either from library or temp)
@@ -2205,6 +2213,9 @@
                     }
                 }
             }
+
+            // Store reference to handler for cleanup
+            notesArea._handleTimestampClick = handleTimestampClick;
 
             // Add both click and touchend for mobile support
             notesArea.addEventListener('click', handleTimestampClick);
@@ -2247,12 +2258,18 @@
         // Auto-save notes every 2 seconds
         setInterval(() => {
             const notesArea = document.getElementById('notesArea');
-            if (document.getElementById('videoView').classList.contains('active')) {
-                if (currentVideoIndex !== null) {
+            const videoView = document.getElementById('videoView');
+
+            // Guard: check elements exist and view is active
+            if (!notesArea || !videoView || !videoView.classList.contains('active')) return;
+
+            // Guard: check indices are valid
+            if (currentVideoIndex !== null) {
+                if (currentVideoIndex >= 0 && currentVideoIndex < videoLibrary.length) {
                     videoLibrary[currentVideoIndex].notes = notesArea.value;
-                } else if (tempVideo) {
-                    tempVideo.notes = notesArea.value;
                 }
+            } else if (tempVideo) {
+                tempVideo.notes = notesArea.value;
             }
         }, 2000);
     </script>
