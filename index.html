@@ -1508,21 +1508,22 @@
             document.getElementById('libraryView').classList.remove('active');
             document.getElementById('videoView').classList.add('active');
 
-            // Update title/URL immediately
-            document.getElementById('videoTitle').textContent = video.title || `${video.platform} Video`;
-            document.getElementById('videoUrlDisplay').textContent = video.videoUrl;
-            document.getElementById('notesArea').value = video.notes || '';
+            // Use requestAnimationFrame to wait for browser paint, then setTimeout for safety
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    // Update title/URL
+                    document.getElementById('videoTitle').textContent = video.title || `${video.platform} Video`;
+                    document.getElementById('videoUrlDisplay').textContent = video.videoUrl;
+                    document.getElementById('notesArea').value = video.notes || '';
 
-            // Small delay to let browser render the iframe
-            setTimeout(() => {
-                const timestampBtn = document.querySelector('.timestamp-btn');
-                const iframe = document.getElementById('videoPlayer');
+                    const timestampBtn = document.querySelector('.timestamp-btn');
+                    const iframe = document.getElementById('videoPlayer');
 
-                if (!iframe) {
-                    showAlert('⚠️ Video player not found! Please refresh the page.');
-                    console.error('iframe element not found after view switch');
-                    return;
-                }
+                    if (!iframe) {
+                        showAlert('⚠️ Video player not found! Please refresh the page.');
+                        console.error('iframe element not found after view switch');
+                        return;
+                    }
 
                 // Clear any existing YouTube player
                 if (youtubePlayer && typeof youtubePlayer.destroy === 'function') {
@@ -1561,9 +1562,10 @@
                     timestampBtn.textContent = '⏰ Timestamp (YouTube only)';
                 }
 
-                // Enable clickable timestamps
-                makeTimestampsClickable();
-            }, 100);
+                    // Enable clickable timestamps
+                    makeTimestampsClickable();
+                }, 200); // Increased timeout for reliability
+            }); // Close requestAnimationFrame
         }
 
         // ===== LIBRARY RENDERING =====
