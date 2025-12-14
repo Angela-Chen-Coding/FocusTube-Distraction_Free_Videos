@@ -1,4 +1,4 @@
-# FocusTube
+# FocusTube-Distraction Free Videos!
 Welcome to FocusTube - Your Personal Video Player!
 
 This is a beautiful, distraction-free video manager that lets you watch, organize, and share videos from YouTube, TikTok, Vimeo, Twitch, Dailymotion, and more—all in one place!
