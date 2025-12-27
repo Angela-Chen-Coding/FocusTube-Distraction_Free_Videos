@@ -13,4 +13,4 @@ This is a beautiful, distraction-free video manager that lets you watch, organiz
 
 Perfect for students, researchers, content curators, or anyone who wants a cleaner way to manage their favorite videos!
 
-Link to live website: https://angela-chen-coding.github.io/FocusTube/
+Link to live website: [https://angela-chen-coding.github.io/FocusTube/](https://angela-chen-coding.github.io/FocusTube-Distraction_Free_Videos/)
